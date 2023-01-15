@@ -20,7 +20,7 @@ switch($_GET['step']) {
         $content .= '</div>';
         $content .= '</div>';
 
-        show_install_page($content);
+        show_page($content);
 
         break;
 
@@ -61,6 +61,20 @@ switch($_GET['step']) {
         $content .= '</div>';
         $content .= '</div>';
 
+        $content .= '<div class="mb-3 row">';
+        $content .= '<label for="username" class="col-sm-4 col-form-label">管理员用户名：</label>';
+        $content .= '<div class="col-sm-6">';
+        $content .= '<input type="text" class="form-control" name="username" id="username" value="admin">';
+        $content .= '</div>';
+        $content .= '</div>';
+
+        $content .= '<div class="mb-3 row">';
+        $content .= '<label for="password" class="col-sm-4 col-form-label">管理员密码：</label>';
+        $content .= '<div class="col-sm-6">';
+        $content .= '<input type="password" class="form-control" name="password" id="password">';
+        $content .= '</div>';
+        $content .= '</div>';
+
         $content .= '<div class="row">';
         $content .= '<div class="col-3 offset-9">';
         $content .= '<button type="submit" class="btn btn-primary">下一步</button>';
@@ -68,7 +82,7 @@ switch($_GET['step']) {
         $content .= '</div>';
         $content .= '</form>';
 
-        show_install_page($content);
+        show_page($content);
 
         break;
 
@@ -78,6 +92,8 @@ switch($_GET['step']) {
         $db_username = $_POST['db_username'];
         $db_password = $_POST['db_password'];
         $db_name = $_POST['db_name'];
+        $username = safe_input($_POST['username']);
+        $password = md5($_POST['password']);
 
         $conn = new mysqli("{$db_server}:{$db_port}", $db_username, $db_password);
 
@@ -100,12 +116,24 @@ switch($_GET['step']) {
             }
         }
 
-        $install_script = file_get_contents(dirname(__FILE__) . '/install.sql');
+        if (!$username || !$password) {
+            show_back('输入的信息不完整！');
+            exit(0);
+        }
 
-        if (!($conn->multi_query($install_script))) {
+        if (strlen($username) < 4 || strlen($username) > 16) {
+            show_back('用户名长度应在4至16位之间！');
+            exit(0);
+        }
+
+        $install_script = file_get_contents(dirname(__FILE__) . '/install.sql');
+        $install_script .= "INSERT INTO user (`username`, `password`) VALUES ('$username', '$password')";
+
+        if (!$conn->multi_query($install_script)) {
             show_back('安装过程出现错误：' . $conn->error);
             exit(0);
         }
+
         $db_config = array(
             'server' => $db_server,
             'port' => $db_port,
@@ -124,11 +152,17 @@ switch($_GET['step']) {
         $content .= '<button type="button" class="btn btn-primary" onclick="location.href=\'../\';">结束</button>';
         $content .= '</div>';
         $content .= '</div>';
-        show_install_page($content);
+        show_page($content);
 }
 
+function safe_input($data) {
+    $data = trim($data);
+    $data = stripcslashes($data);
+    $data = htmlspecialchars($data);
+    return $data;
+}
 
-function show_install_page($content) {
+function show_page($content) {
     $template = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>短网址服务 - 缩短长链接！</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"></head><body><div class="container-fluid"><div class="row"><div class="col-12 py-2 bg-dark text-white"><p class="fs-5 mb-0">短网址服务 - 安装程序</p></div></div><div class="row py-4"><div class="col-3 d-none d-sm-flex"></div><div class="col-12 col-sm-6">{content}</div><div class="col-3 d-none d-sm-flex"></div></div></div></body></html>';
 
     echo str_replace('{content}', $content, $template);
@@ -142,7 +176,7 @@ function show_back($text) {
     $content .= '</div>';
     $content .= '</div>';
 
-    show_install_page($content);
+    show_page($content);
 }
 
 ?>
