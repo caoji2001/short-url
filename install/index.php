@@ -146,7 +146,9 @@ switch($_GET['step']) {
         $config_content .= var_export($db_config, true) . ';' . PHP_EOL . '?>';
         file_put_contents($config_file, $config_content);
 
-        $content = '<p>短网址服务已成功安装！</p><p>接下来，请进行重定向配置！</p>';
+        $content = '<p>短网址服务已成功安装！</p>';
+        $content .= '<p>如果你使用的是Apache服务器，由于已经自带了<code>.htaccess</code>文件，因此你无需进行额外的配置。</p>';
+        $content .= '<p>如果你使用的是Nginx服务器，请参考<a href="https://github.com/caoji2001/short-url/blob/main/README.md#%E5%AE%89%E8%A3%85" target="_blank">README.md</a>进行重定向配置。</p>';
         $content .= '<div class="row">';
         $content .= '<div class="col-3 offset-9">';
         $content .= '<button type="button" class="btn btn-primary" onclick="location.href=\'../\';">结束</button>';

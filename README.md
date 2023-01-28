@@ -7,13 +7,13 @@
 ## 安装
 首次使用时，请访问 `/install` 子目录，运行安装程序。
 
-之后，你需要进行重定向配置，对于 Nginx，需要添加如下配置：
+如果你使用的是Apache服务器，由于已经自带了`.htaccess`文件，因此你无需进行额外的配置。
+如果你使用的是Nginx服务器，则需要添加如下重定向配置：
 
 ```nginx
 location / {
   if (!-e $request_filename) {
-   	rewrite  ^(.*)$  /go.php?id=/$1  last;
-   	break;
+    rewrite ^(.*)$ /go.php?id=$1 break;
   }
 }
 ```
