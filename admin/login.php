@@ -14,7 +14,7 @@ if (isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
     exit(0);
 }
 
-switch($_GET['step']) {
+switch(@$_GET['step']) {
     default:
         $content = '<form action="?step=login" method="post">';
 
