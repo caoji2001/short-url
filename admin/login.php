@@ -74,9 +74,8 @@ switch(@$_GET['step']) {
         } else {
             show_back('用户名或密码错误！');
         }
+        $conn->close();
 }
-
-$conn->close();
 
 function safe_input($data) {
     $data = trim($data);
