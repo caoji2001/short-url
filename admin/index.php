@@ -29,7 +29,7 @@ if (!$result) {
     exit(0);
 }
 
-$content = '<table class="table table-hover">';
+$content = '<table class="table table-sm table-hover">';
 $content .= '<thead>';
 $content .= '<tr>';
 $content .= '<th scope="col">#</th>';
@@ -54,8 +54,8 @@ if ($result->num_rows > 0) {
 
     while ($row = $result->fetch_assoc()) {
         $content .= '<tr>';
-        $content .= '<th scope="row">' . from10_to62($row['id']) . '</th>';
-        $content .= '<th>' . $row['url'] . '</th>';
+        $content .= '<th scope="row" class="align-middle">' . from10_to62($row['id']) . '</th>';
+        $content .= '<th class="align-middle">' . $row['url'] . '</th>';
         $content .= '<th>';
 
         $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete' . $row['id'] . '">删除';
