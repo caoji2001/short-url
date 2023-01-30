@@ -10,17 +10,21 @@ if ($conn->connect_error) {
     exit(0);
 }
 
-$sql = 'SELECT url FROM `fwlink` WHERE id = "' . from62_to10($id) . '";';
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $row = $result->fetch_assoc();
-
-    header('Location: '. $row['url']);
-} else {
+$sql = "SELECT url FROM `fwlink` WHERE id = ?";
+$stmt = $conn->prepare($sql);
+$num = from62_to10($id);
+$stmt->bind_param("s", $num);
+$stmt->execute();
+$stmt->store_result();
+if ($stmt->num_rows === 0) {
     echo '查询失败！';
+} else {
+    $stmt->bind_result($url);
+    $stmt->fetch();
+    header('Location: '. $url);
 }
 
+$stmt->close();
 $conn->close();
 
 function safe_input($data) {

@@ -22,15 +22,16 @@ if ($conn->connect_error) {
 }
 
 $id = safe_input($_GET['id']);
-$sql = "DELETE from `fwlink` WHERE `id` = '$id'";
-$result = $conn->query($sql);
+$sql = "DELETE from `fwlink` WHERE `id` = ?";
 
-if (!$result) {
+if ($stmt = $conn->prepare($sql)) {
+    $stmt->bind_param('s', $id);
+    $stmt->execute();
+    $stmt->close();
+    show_back('成功删除数据！');
+} else {
     show_back('无法删除数据：' . $conn->error);
-    exit(0);
 }
-
-show_back('成功删除数据！');
 $conn->close();
 
 function safe_input($data) {

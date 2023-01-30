@@ -60,19 +60,20 @@ switch(@$_GET['step']) {
             exit(0);
         }
 
-        $sql = "SELECT `username`, `password` FROM `user` WHERE `username` = '$username' AND `password` = '$password'";
-        $result = $conn->query($sql);
-        if (!$result) {
-            show_back('登陆过程出现错误：' . $conn->error);
-            exit(0);
-        }
-
-        if ($result->num_rows > 0) {
-            $_SESSION['admin'] = true;
-
-            header('Location: ./index.php');
+        $sql = "SELECT `username`, `password` FROM `user` WHERE `username` = ? AND `password` = ?";
+        if ($stmt = $conn->prepare($sql)) {
+            $stmt->bind_param('ss', $username, $password);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($result->num_rows === 0) {
+                show_back('用户名或密码错误！');
+            } else {
+                $_SESSION['admin'] = true;
+                header('Location: ./index.php');
+            }
+            $stmt->close();
         } else {
-            show_back('用户名或密码错误！');
+            show_back('登陆过程出现错误：' . $conn->error);
         }
         $conn->close();
 }

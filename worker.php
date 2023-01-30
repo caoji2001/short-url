@@ -12,11 +12,14 @@ if (empty($input_url)) {
 } elseif ($conn->connect_error) {
     show_invalid_page($input_url, '数据库连接失败！' . $conn->connect_error);
 } else {
-    $sql = 'INSERT INTO fwlink(url) VALUES ("{input_url}")';
-    $sql = str_replace('{input_url}', $input_url, $sql);
+    $sql = "INSERT INTO fwlink(`url`) VALUES (?)";
 
-    if ($conn->query($sql) === TRUE) {
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param('s', $input_url);
+        $stmt->execute();
         $last_id = $conn->insert_id;
+        $stmt->close();
+
         $protocol = '';
         if (isset($_SERVER['HTTPS']) &&
             ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
