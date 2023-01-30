@@ -58,26 +58,8 @@ if ($result->num_rows > 0) {
         $content .= '<th class="align-middle">' . $row['url'] . '</th>';
         $content .= '<th>';
 
-        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#delete' . $row['id'] . '">删除';
+        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id10="' . $row['id'] . '" data-bs-id62="' . from10_to62($row['id']) . '">删除';
         $content .= '</button>';
-
-        $content .= '<div class="modal fade" id="delete' . $row['id'] . '" tabindex="-1">';
-        $content .= '<div class="modal-dialog">';
-        $content .= '<div class="modal-content">';
-        $content .= '<div class="modal-header">';
-        $content .= '<h1 class="modal-title fs-5">删除确认</h1>';
-        $content .= '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
-        $content .= '</div>';
-        $content .= '<div class="modal-body">';
-        $content .= '你确定要删除短链接<code>' . $site_url . from10_to62($row['id']) . '</code>吗？';
-        $content .= '</div>';
-        $content .= '<div class="modal-footer">';
-        $content .= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>';
-        $content .= '<a class="btn btn-danger" href="./del.php?id=' . $row['id'] . '" role="button">删除</a>';
-        $content .= '</div>';
-        $content .= '</div>';
-        $content .= '</div>';
-        $content .= '</div>';
         
         $content .= '</th>';
         $content .= '</tr>';
@@ -88,6 +70,22 @@ $conn->close();
 
 $content .= '</tbody>';
 $content .= '</table>';
+
+$content .= '<div class="modal fade" id="deleteModal" tabindex="-1">';
+$content .= '<div class="modal-dialog">';
+$content .= '<div class="modal-content">';
+$content .= '<div class="modal-header">';
+$content .= '<h1 class="modal-title fs-5">删除确认</h1>';
+$content .= '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
+$content .= '</div>';
+$content .= '<div class="modal-body">你确定要删除短链接';
+$content .= '<code>http://localhost/<span id="get_data62"></span></code>吗？</div>';
+$content .= '<div class="modal-footer">';
+$content .= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>';
+$content .= '<a class="btn btn-danger" id="delete_op_link" href="" role="button">删除</a></div>';
+$content .= '</div>';
+$content .= '</div>';
+$content .= '</div>';
 
 show_page($content);
 
@@ -104,7 +102,7 @@ function from10_to62($num) {
 }
 
 function show_page($content) {
-    $template = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>短网址服务 - 缩短长链接！</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"></head><body><div class="container-fluid px-0"><nav class="navbar bg-light"><div class="container-fluid"><span class="navbar-brand mb-0 h1">短网址服务 - 管理面板</span><a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a></div></nav><div class="row py-4"><div class="col-1 d-none d-sm-flex"></div><div class="col-12 col-sm-10">{content}</div><div class="col-1 d-none d-sm-flex"></div></div></div></body><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script></html>';
+    $template = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>短网址服务 - 缩短长链接！</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"></head><body><div class="container-fluid px-0"><nav class="navbar bg-light"><div class="container-fluid"><span class="navbar-brand mb-0 h1">短网址服务 - 管理面板</span><a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a></div></nav><div class="row py-4"><div class="col-1 d-none d-sm-flex"></div><div class="col-12 col-sm-10">{content}</div><div class="col-1 d-none d-sm-flex"></div></div></div></body><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script><script src="./modal.js"></script></html>';
 
     echo str_replace('{content}', $content, $template);
 }
