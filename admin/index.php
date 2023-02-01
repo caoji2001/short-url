@@ -50,7 +50,7 @@ if ($result->num_rows > 0) {
         else {
             $protocol = 'http://';
         }
-    $site_url = $protocol . $_SERVER['HTTP_HOST'] . '/';
+    $siteurl = $protocol . $_SERVER['HTTP_HOST'] . '/';
 
     while ($row = $result->fetch_assoc()) {
         $content .= '<tr>';
@@ -58,7 +58,7 @@ if ($result->num_rows > 0) {
         $content .= '<th class="align-middle">' . $row['url'] . '</th>';
         $content .= '<th>';
 
-        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id10="' . $row['id'] . '" data-bs-url="' . $site_url . from10_to62($row['id']) . '">删除';
+        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-siteurl="' . $siteurl . '" data-bs-id62="' . from10_to62($row['id']) . '" data-bs-url="' . $row['url'] . '">删除';
         $content .= '</button>';
         
         $content .= '</th>';
@@ -74,15 +74,29 @@ $content .= '</table>';
 $content .= '<div class="modal fade" id="deleteModal" tabindex="-1">';
 $content .= '<div class="modal-dialog">';
 $content .= '<div class="modal-content">';
+$content .= '<form action="del.php" method="post">';
 $content .= '<div class="modal-header">';
 $content .= '<h1 class="modal-title fs-5">删除确认</h1>';
 $content .= '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
 $content .= '</div>';
-$content .= '<div class="modal-body">你确定要删除短链接';
-$content .= '<code id="get_url"></code>吗？</div>';
+$content .= '<div class="modal-body">';
+$content .= '<label class="form-label">待删除短链接</label>';
+$content .= '<div class="row">';
+$content .= '<div class="col-auto d-flex flex-column justify-content-center pe-0">';
+$content .= '<span id="get_siteurl"></span>';
+$content .= '</div>';
+$content .= '<div class="col-auto ps-0">';
+$content .= '<input type="text" name="id62" id="get_id62" class="form-control px-0" readonly />';
+$content .= '</div>';
+$content .= '</div>';
+$content .= '<label class="form-label">指向链接</label>';
+$content .= '<input type="text" id="get_url" class="form-control" readonly />';
+$content .= '</div>';
 $content .= '<div class="modal-footer">';
 $content .= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>';
-$content .= '<a class="btn btn-danger" id="delete_op_link" href="" role="button">删除</a></div>';
+$content .= '<button type="submit" id="form_submit" class="btn btn-primary">确认</button>';
+$content .= '</div>';
+$content .= '</form>';
 $content .= '</div>';
 $content .= '</div>';
 $content .= '</div>';

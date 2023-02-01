@@ -21,7 +21,7 @@ if ($conn->connect_error) {
     exit(0);
 }
 
-$id = safe_input($_GET['id']);
+$id = from62_to10($_POST['id62']);
 $sql = "DELETE from `fwlink` WHERE `id` = ?";
 
 if ($stmt = $conn->prepare($sql)) {
@@ -34,11 +34,17 @@ if ($stmt = $conn->prepare($sql)) {
 }
 $conn->close();
 
-function safe_input($data) {
-    $data = trim($data);
-    $data = stripcslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+function from62_to10($num) {
+    $from = 62;
+    $num = strval($num);
+    $dict = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $len = strlen($num);
+    $dec = 0;
+    for($i = 0; $i < $len; $i++) {
+        $pos = strpos($dict, $num[$i]);
+        $dec = bcadd(bcmul($pos, bcpow($from, $len - $i - 1)), $dec);
+    }
+    return $dec;
 }
 
 function show_page($content) {
@@ -51,7 +57,7 @@ function show_back($text) {
     $content = '<p>' . $text . '</p>';
     $content .= '<div class="row">';
     $content .= '<div class="col-3 offset-9">';
-    $content .= '<button type="button" class="btn btn-primary" onclick="history.back();">返回</button>';
+    $content .= '<a class="btn btn-primary" href="./index.php" role="button">返回</a>';
     $content .= '</div>';
     $content .= '</div>';
 
