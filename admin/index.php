@@ -58,7 +58,7 @@ if ($result->num_rows > 0) {
         $content .= '<th class="align-middle">' . $row['url'] . '</th>';
         $content .= '<th>';
 
-        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id10="' . $row['id'] . '" data-bs-id62="' . from10_to62($row['id']) . '">删除';
+        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id10="' . $row['id'] . '" data-bs-url="' . $site_url . from10_to62($row['id']) . '">删除';
         $content .= '</button>';
         
         $content .= '</th>';
@@ -79,7 +79,7 @@ $content .= '<h1 class="modal-title fs-5">删除确认</h1>';
 $content .= '<button type="button" class="btn-close" data-bs-dismiss="modal"></button>';
 $content .= '</div>';
 $content .= '<div class="modal-body">你确定要删除短链接';
-$content .= '<code>http://localhost/<span id="get_data62"></span></code>吗？</div>';
+$content .= '<code id="get_url"></code>吗？</div>';
 $content .= '<div class="modal-footer">';
 $content .= '<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>';
 $content .= '<a class="btn btn-danger" id="delete_op_link" href="" role="button">删除</a></div>';
