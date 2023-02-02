@@ -2,5 +2,5 @@
     RewriteEngine on
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteCond %{REQUEST_FILENAME} !-f
-    RewriteRule ^(.*)$ go.php?id=$1 [QSA,L]
+    RewriteRule ^(.*)$ api/go.php?id=$1 [QSA,L]
 </IfModule>

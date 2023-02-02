@@ -1,5 +1,5 @@
 <?php
-$config_file = dirname(__FILE__).'/system/config.inc.php';
+$config_file = dirname(__FILE__).'/../system/config.inc.php';
 include($config_file);
 
 $input_url = safe_input($_POST['input_url']);

@@ -13,7 +13,7 @@
 ```nginx
 location / {
   if (!-e $request_filename) {
-    rewrite ^(.*)$ /go.php?id=$1 break;
+    rewrite "^/(.*)$" "/api/go.php?id=$1" last;
   }
 }
 ```

@@ -8,7 +8,7 @@ function show_url() {
         }
     }
 
-    xmlhttp.open("POST", "/worker.php", true);
+    xmlhttp.open("POST", "/api/worker.php", true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("input_url=" + document.getElementById("input_url").value);
 }
