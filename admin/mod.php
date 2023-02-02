@@ -16,23 +16,27 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
 
 $conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
 
-if ($conn->connect_error) {
-    show_back('数据库连接失败：' . $conn->connect_error);
-    exit(0);
-}
-
 $id = from62_to10($_POST['id62']);
-$sql = "DELETE from `fwlink` WHERE `id` = ?";
+$input_url = $_POST['url'];
 
-if ($stmt = $conn->prepare($sql)) {
-    $stmt->bind_param('s', $id);
-    $stmt->execute();
-    $stmt->close();
-    show_back('成功删除数据！');
+if (empty($input_url)) {
+    show_back('请输入要缩短的长链接！');
+} elseif (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $input_url)) {
+    show_back('输入的长链接不合法！');
+} elseif ($conn->connect_error) {
+    show_back('数据库连接失败！' . $conn->connect_error);
 } else {
-    show_back('无法删除数据：' . $conn->error);
+    $sql = "UPDATE `fwlink` SET `url`=? WHERE `id`=?";
+    if ($stmt = $conn->prepare($sql)) {
+        $stmt->bind_param('ss', $input_url, $id);
+        $stmt->execute();
+        $stmt->close();
+        show_back('成功更改短链接指向！');
+    } else {
+        show_back('无法修改数据：' . $conn->error);
+    }
+    $conn->close();
 }
-$conn->close();
 
 function from62_to10($num) {
     $from = 62;

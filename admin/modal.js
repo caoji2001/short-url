@@ -1,5 +1,16 @@
 const deleteModal = document.getElementById('deleteModal')
-const formSubmit = document.getElementById('form_submit')
+const modifyModal = document.getElementById('modifyModal')
+
+modifyModal.addEventListener('show.bs.modal', event => {
+    const button = event.relatedTarget
+    const siteurl = button.getAttribute('data-bs-siteurl')
+    const id62 = button.getAttribute('data-bs-id62')
+    const url = button.getAttribute('data-bs-url')
+
+    document.getElementById('mod_get_siteurl').innerText = siteurl
+    document.getElementById('mod_get_id62').value = id62
+    document.getElementById('mod_get_url').value = url
+})
 
 deleteModal.addEventListener('show.bs.modal', event => {
     const button = event.relatedTarget
@@ -7,7 +18,7 @@ deleteModal.addEventListener('show.bs.modal', event => {
     const id62 = button.getAttribute('data-bs-id62')
     const url = button.getAttribute('data-bs-url')
 
-    document.getElementById('get_siteurl').innerText = siteurl
-    document.getElementById('get_id62').value = id62
-    document.getElementById('get_url').value = url
+    document.getElementById('del_get_siteurl').innerText = siteurl
+    document.getElementById('del_get_id62').value = id62
+    document.getElementById('del_get_url').value = url
 })
