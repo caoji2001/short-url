@@ -93,7 +93,7 @@ switch($_GET['step']) {
         $db_username = $_POST['db_username'];
         $db_password = $_POST['db_password'];
         $db_name = $_POST['db_name'];
-        $username = safe_input($_POST['username']);
+        $username = $_POST['username'];
         $password = md5($_POST['password']);
 
         $conn = new mysqli("{$db_server}:{$db_port}", $db_username, $db_password);
@@ -156,13 +156,6 @@ switch($_GET['step']) {
         $content .= '</div>';
         $content .= '</div>';
         show_page($content);
-}
-
-function safe_input($data) {
-    $data = trim($data);
-    $data = stripcslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
 }
 
 function show_page($content) {

@@ -1,6 +1,8 @@
 <?php
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+require_once($config_file);
+$MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
+require_once($MysqliDb_file);
 
 if (!$db_config) {
     header('Location: ../install/');
@@ -8,7 +10,6 @@ if (!$db_config) {
 }
 
 session_start();
-
 if (isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
     header('Location: ./index.php');
     exit(0);
@@ -45,7 +46,7 @@ switch(@$_GET['step']) {
         break;
 
     case 'login':
-        $username = safe_input($_POST['username']);
+        $username = $_POST['username'];
         $password = md5($_POST['password']);
 
         if (!$username || !$password) {
@@ -53,36 +54,22 @@ switch(@$_GET['step']) {
             exit(0);
         }
 
-        $conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
+        $db = new MysqliDb (Array (
+            'host' => $db_config['server'],
+            'username' => $db_config['username'], 
+            'password' => $db_config['password'],
+            'db'=> $db_config['name'],
+            'port' => $db_config['port']));
 
-        if ($conn->connect_error) {
-            show_back('数据库连接失败：' . $conn->connect_error);
-            exit(0);
-        }
-
-        $sql = "SELECT `username`, `password` FROM `user` WHERE `username` = ? AND `password` = ?";
-        if ($stmt = $conn->prepare($sql)) {
-            $stmt->bind_param('ss', $username, $password);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            if ($result->num_rows === 0) {
-                show_back('用户名或密码错误！');
-            } else {
-                $_SESSION['admin'] = true;
-                header('Location: ./index.php');
-            }
-            $stmt->close();
+        $count = $db->where('username', $username)->where('password', $password)->getValue('user', "count(*)");
+        if ($count === 0) {
+            show_back('用户名或密码错误！');
         } else {
-            show_back('登陆过程出现错误：' . $conn->error);
+            $_SESSION['admin'] = true;
+            header('Location: ./index.php');
         }
-        $conn->close();
-}
 
-function safe_input($data) {
-    $data = trim($data);
-    $data = stripcslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
+        $db->disconnect();
 }
 
 function show_page($content) {

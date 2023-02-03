@@ -1,25 +1,25 @@
 <?php
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+require_once($config_file);
+$MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
+require_once($MysqliDb_file);
 
-$input_url = safe_input($_POST['input_url']);
-$conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
+$input_url = $_POST['input_url'];
 
 if (empty($input_url)) {
     show_invalid_page('', '请输入要缩短的长链接！');
 } elseif (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $input_url)) {
     show_invalid_page($input_url, '输入的长链接不合法！');
-} elseif ($conn->connect_error) {
-    show_invalid_page($input_url, '数据库连接失败！' . $conn->connect_error);
 } else {
-    $sql = "INSERT INTO fwlink(`url`) VALUES (?)";
+    $db = new MysqliDb (Array (
+        'host' => $db_config['server'],
+        'username' => $db_config['username'], 
+        'password' => $db_config['password'],
+        'db'=> $db_config['name'],
+        'port' => $db_config['port']));
 
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param('s', $input_url);
-        $stmt->execute();
-        $last_id = $conn->insert_id;
-        $stmt->close();
-
+    $id = $db->insert('fwlink', Array('url' => $input_url));
+    if ($id) {
         $protocol = '';
         if (isset($_SERVER['HTTPS']) &&
             ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
@@ -30,21 +30,12 @@ if (empty($input_url)) {
         else {
             $protocol = 'http://';
         }
-        $fwlink = $protocol . $_SERVER['HTTP_HOST'] . '/' . from10_to62($last_id);
+        $fwlink = $protocol . $_SERVER['HTTP_HOST'] . '/' . from10_to62($id);
 
         show_valid_page($fwlink);
     } else {
-        show_invalid_page($input_url, '数据库语句执行出错！' . $conn->connect_error);
+        show_invalid_page($input_url, '数据库语句执行出错！' . $db->getLastError());
     }
-}
-
-$conn->close();
-
-function safe_input($data) {
-    $data = trim($data);
-    $data = stripcslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
 }
 
 function from10_to62($num) {

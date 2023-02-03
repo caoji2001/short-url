@@ -1,6 +1,8 @@
 <?php
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+require_once($config_file);
+$MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
+require_once($MysqliDb_file);
 
 if (!$db_config) {
     header('Location: ../install/');
@@ -8,24 +10,8 @@ if (!$db_config) {
 }
 
 session_start();
-
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     header('Location: ./login.php');
-    exit(0);
-}
-
-$conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
-
-if ($conn->connect_error) {
-    show_error('数据库连接失败：' . $conn->connect_error);
-    exit(0);
-}
-
-$sql = 'SELECT `id`, `url` FROM `fwlink`';
-$result = $conn->query($sql);
-
-if (!$result) {
-    show_back('数据库查询出现错误：' . $conn->error);
     exit(0);
 }
 
@@ -40,31 +26,40 @@ $content .= '</tr>';
 $content .= '</thead>';
 $content .= '<tbody class="table-group-divider">';
 
-if ($result->num_rows > 0) {
-        $protocol = '';
-        if (isset($_SERVER['HTTPS']) &&
-            ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-            $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-            $protocol = 'https://';
-        }
-        else {
-            $protocol = 'http://';
-        }
+$db = new MysqliDb (Array (
+    'host' => $db_config['server'],
+    'username' => $db_config['username'], 
+    'password' => $db_config['password'],
+    'db'=> $db_config['name'],
+    'port' => $db_config['port']));
+
+$results = $db->get('fwlink', null, Array('id', 'url'));
+
+if ($db->count > 0) {
+    $protocol = '';
+    if (isset($_SERVER['HTTPS']) &&
+        ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
+        isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
+        $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+        $protocol = 'https://';
+    }
+    else {
+        $protocol = 'http://';
+    }
     $siteurl = $protocol . $_SERVER['HTTP_HOST'] . '/';
 
-    while ($row = $result->fetch_assoc()) {
+    foreach ($results as $result) {
         $content .= '<tr>';
-        $content .= '<th scope="row" class="align-middle">' . from10_to62($row['id']) . '</th>';
-        $content .= '<th class="align-middle">' . $row['url'] . '</th>';
+        $content .= '<th scope="row" class="align-middle">' . from10_to62($result['id']) . '</th>';
+        $content .= '<th class="align-middle">' . $result['url'] . '</th>';
 
         $content .= '<th>';
-        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-siteurl="' . $siteurl . '" data-bs-id62="' . from10_to62($row['id']) . '" data-bs-url="' . $row['url'] . '">修改';
+        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-siteurl="' . $siteurl . '" data-bs-id62="' . from10_to62($result['id']) . '" data-bs-url="' . $result['url'] . '">修改';
         $content .= '</button>';
         $content .= '</th>';
 
         $content .= '<th>';
-        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-siteurl="' . $siteurl . '" data-bs-id62="' . from10_to62($row['id']) . '" data-bs-url="' . $row['url'] . '">删除';
+        $content .= '<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-siteurl="' . $siteurl . '" data-bs-id62="' . from10_to62($result['id']) . '" data-bs-url="' . $result['url'] . '">删除';
         $content .= '</button>';
         $content .= '</th>';
 
@@ -72,7 +67,7 @@ if ($result->num_rows > 0) {
     }
 }
 
-$conn->close();
+$db->disconnect();
 
 $content .= '</tbody>';
 $content .= '</table>';

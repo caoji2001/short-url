@@ -1,38 +1,25 @@
 <?php
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+require_once($config_file);
+$MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
+require_once($MysqliDb_file);
 
-$id = safe_input($_GET['id']);
-$conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
+$db = new MysqliDb (Array (
+    'host' => $db_config['server'],
+    'username' => $db_config['username'], 
+    'password' => $db_config['password'],
+    'db'=> $db_config['name'],
+    'port' => $db_config['port']));
 
-if ($conn->connect_error) {
-    echo '数据库连接失败：' . $conn->connect_error;
-    exit(0);
-}
-
-$sql = "SELECT url FROM `fwlink` WHERE id = ?";
-$stmt = $conn->prepare($sql);
-$num = from62_to10($id);
-$stmt->bind_param("s", $num);
-$stmt->execute();
-$stmt->store_result();
-if ($stmt->num_rows === 0) {
-    echo '查询失败！';
+$id = $_GET['id'];
+$result = $db->where('id', from62_to10($id))->get('fwlink');
+if (count($result) === 0) {
+    exit("查询失败！");
 } else {
-    $stmt->bind_result($url);
-    $stmt->fetch();
-    header('Location: '. $url);
+    header('Location: '. $result[0]['url']);
 }
 
-$stmt->close();
-$conn->close();
-
-function safe_input($data) {
-    $data = trim($data);
-    $data = stripcslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
+$db->disconnect();
 
 function from62_to10($num) {
     $from = 62;

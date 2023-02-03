@@ -1,6 +1,8 @@
 <?php
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+require_once($config_file);
+$MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
+require_once($MysqliDb_file);
 
 if (!$db_config) {
     header('Location: ../install/');
@@ -8,13 +10,10 @@ if (!$db_config) {
 }
 
 session_start();
-
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     header('Location: ./login.php');
     exit(0);
 }
-
-$conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
 
 $id = from62_to10($_POST['id62']);
 $input_url = $_POST['url'];
@@ -23,19 +22,23 @@ if (empty($input_url)) {
     show_back('请输入要缩短的长链接！');
 } elseif (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $input_url)) {
     show_back('输入的长链接不合法！');
-} elseif ($conn->connect_error) {
-    show_back('数据库连接失败！' . $conn->connect_error);
 } else {
-    $sql = "UPDATE `fwlink` SET `url`=? WHERE `id`=?";
-    if ($stmt = $conn->prepare($sql)) {
-        $stmt->bind_param('ss', $input_url, $id);
-        $stmt->execute();
-        $stmt->close();
+    $db = new MysqliDb (Array (
+        'host' => $db_config['server'],
+        'username' => $db_config['username'], 
+        'password' => $db_config['password'],
+        'db'=> $db_config['name'],
+        'port' => $db_config['port']));
+
+    $db->where('id', $id)->update('fwlink', Array('url' => $input_url));
+
+    if ($db->getLastErrno() === 0) {
         show_back('成功更改短链接指向！');
     } else {
-        show_back('无法修改数据：' . $conn->error);
+        show_back('修改数据失败：' . $db->getLastError());
     }
-    $conn->close();
+
+    $db->disconnect();
 }
 
 function from62_to10($num) {

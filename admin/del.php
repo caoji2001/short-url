@@ -1,6 +1,8 @@
 <?php
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+require_once($config_file);
+$MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
+require_once($MysqliDb_file);
 
 if (!$db_config) {
     header('Location: ../install/');
@@ -8,31 +10,27 @@ if (!$db_config) {
 }
 
 session_start();
-
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     header('Location: ./login.php');
     exit(0);
 }
 
-$conn = @new mysqli($db_config['server'], $db_config['username'], $db_config['password'], $db_config['name'], $db_config['port']);
+$db = new MysqliDb (Array (
+    'host' => $db_config['server'],
+    'username' => $db_config['username'], 
+    'password' => $db_config['password'],
+    'db'=> $db_config['name'],
+    'port' => $db_config['port']));
 
-if ($conn->connect_error) {
-    show_back('数据库连接失败：' . $conn->connect_error);
-    exit(0);
-}
+$db->where('id', from62_to10($_POST['id62']))->delete('fwlink');
 
-$id = from62_to10($_POST['id62']);
-$sql = "DELETE from `fwlink` WHERE `id` = ?";
-
-if ($stmt = $conn->prepare($sql)) {
-    $stmt->bind_param('s', $id);
-    $stmt->execute();
-    $stmt->close();
+if ($db->getLastErrno() === 0) {
     show_back('成功删除数据！');
 } else {
-    show_back('无法删除数据：' . $conn->error);
+    show_back('删除数据失败：' . $db->getLastError());
 }
-$conn->close();
+
+$db->disconnect();
 
 function from62_to10($num) {
     $from = 62;
