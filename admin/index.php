@@ -22,6 +22,8 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>短网址服务 - 缩短长链接！</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
     </head>
     <body>
         <nav class="navbar bg-light">
@@ -34,13 +36,16 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
             <div class="row">
                 <div class="col-1 d-none d-sm-flex"></div>
                 <div class="col-12 col-sm-10">
-                    <table class="table table-sm table-hover text-break">
+                    <table class="table table-sm table-hover text-break"
+                    data-toggle="table"
+                    data-pagination="true"
+                    data-search="true">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">URL</th>
-                                <th scope="col">修改</th>
-                                <th scope="col">删除</th>
+                                <th scope="col" data-sortable="true" data-width="10" data-width-unit="%">#</th>
+                                <th scope="col" data-width="70" data-width-unit="%">URL</th>
+                                <th scope="col" data-width="10" data-width-unit="%">修改</th>
+                                <th scope="col" data-width="10" data-width-unit="%">删除</th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
@@ -137,6 +142,9 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
             </div>
         </div>
     </body>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
     <script src="../assets/js/modal.js"></script>
 </html>
