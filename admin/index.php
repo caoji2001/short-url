@@ -24,13 +24,13 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
     </head>
     <body>
+        <nav class="navbar bg-light">
+            <div class="container-fluid">
+                <span class="navbar-brand mb-0 h1">短网址服务 - 管理面板</span>
+                <a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a>
+            </div>
+        </nav>
         <div class="container-fluid">
-            <nav class="navbar bg-light">
-                <div class="container-fluid">
-                    <span class="navbar-brand mb-0 h1">短网址服务 - 管理面板</span>
-                    <a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a>
-                </div>
-            </nav>
             <div class="row">
                 <div class="col-1 d-none d-sm-flex"></div>
                 <div class="col-12 col-sm-10">
