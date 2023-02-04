@@ -43,9 +43,8 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                         <thead>
                             <tr>
                                 <th scope="col" data-sortable="true" data-width="10" data-width-unit="%">#</th>
-                                <th scope="col" data-width="70" data-width-unit="%">URL</th>
-                                <th scope="col" data-width="10" data-width-unit="%">修改</th>
-                                <th scope="col" data-width="10" data-width-unit="%">删除</th>
+                                <th scope="col" data-width="75" data-width-unit="%">URL</th>
+                                <th scope="col" data-width="15" data-width-unit="%">操作</th>
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
