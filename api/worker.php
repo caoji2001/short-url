@@ -18,19 +18,24 @@ if (empty($input_url)) {
         'db'=> $db_config['name'],
         'port' => $db_config['port']));
 
-    $id = $db->insert('fwlink', Array('url' => $input_url));
-    if ($id) {
+    $random_number = rand(14776337, 916132832); // [62^4 + 1, 62^5]
+    while ($db->where('id', $random_number)->getValue('fwlink', 'count(*)') > 0) {
+        $random_number = rand(14776337, 916132832); // [62^4 + 1, 62^5]
+    }
+
+    $nice = $db->insert('fwlink', Array('id' => $random_number, 'url' => $input_url));
+    if ($nice) {
         $protocol = '';
         if (isset($_SERVER['HTTPS']) &&
             ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
             isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
             $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
             $protocol = 'https://';
-        }
-        else {
+        } else {
             $protocol = 'http://';
         }
-        $fwlink = $protocol . $_SERVER['HTTP_HOST'] . '/' . from10_to62($id);
+    
+        $fwlink = $protocol . $_SERVER['HTTP_HOST'] . '/' . from10_to62($random_number);
 
         show_valid_page($fwlink);
     } else {
