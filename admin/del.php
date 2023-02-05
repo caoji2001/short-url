@@ -4,11 +4,6 @@ require_once($config_file);
 $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
-if (!$db_config) {
-    header('Location: ../install/');
-    exit(0);
-}
-
 session_start();
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     header('Location: ./login.php');

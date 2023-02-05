@@ -1,3 +1,12 @@
+<?php
+$config_file = dirname(__FILE__).'/system/config.inc.php';
+include_once($config_file);
+
+if (!$db_config) {
+    header('Location: ../install/');
+    exit(0);
+}
+?>
 <!doctype html>
 <html lang="zh-CN">
     <head>

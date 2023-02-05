@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ERROR | E_PARSE);
 $config_file = dirname(__FILE__).'/../system/config.inc.php';
-include($config_file);
+include_once($config_file);
 
 if ($db_config) {
     header('Location: ../');
