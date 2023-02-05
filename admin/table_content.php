@@ -39,16 +39,4 @@ if ($db->count > 0) {
 }
 
 $db->disconnect();
-
-function from10_to62($num) {
-    $to = 62;
-    $num = intval($num);
-    $dict = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $ret = '';
-    do {
-        $ret = $dict[bcmod($num, $to)] . $ret;
-        $num = bcdiv($num, $to);
-    } while ($num > 0);
-    return $ret;
-}
 ?>

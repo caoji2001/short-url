@@ -1,6 +1,6 @@
 <?php
-$config_file = dirname(__FILE__).'/../system/config.inc.php';
-require_once($config_file);
+$core_file = dirname(__FILE__).'/../system/core.php';
+require_once($core_file);
 $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 

@@ -1,6 +1,6 @@
 <?php
-$config_file = dirname(__FILE__).'/system/config.inc.php';
-include_once($config_file);
+$core_file = dirname(__FILE__).'/system/core.php';
+require_once($core_file);
 
 if (!$db_config) {
     header('Location: ../install/');

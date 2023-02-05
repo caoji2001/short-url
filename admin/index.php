@@ -1,6 +1,6 @@
 <?php
-$config_file = dirname(__FILE__).'/../system/config.inc.php';
-require_once($config_file);
+$core_file = dirname(__FILE__).'/../system/core.php';
+require_once($core_file);
 $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
@@ -43,7 +43,7 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                             </tr>
                         </thead>
                         <tbody class="table-group-divider">
-                            <?php include('./table_content.php'); ?>
+                            <?php require_once('./table_content.php'); ?>
                         </tbody>
                     </table>
 

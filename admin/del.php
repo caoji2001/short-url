@@ -1,6 +1,6 @@
 <?php
-$config_file = dirname(__FILE__).'/../system/config.inc.php';
-require_once($config_file);
+$core_file = dirname(__FILE__).'/../system/core.php';
+require_once($core_file);
 $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
@@ -26,19 +26,6 @@ if ($db->getLastErrno() === 0) {
 }
 
 $db->disconnect();
-
-function from62_to10($num) {
-    $from = 62;
-    $num = strval($num);
-    $dict = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    $len = strlen($num);
-    $dec = 0;
-    for($i = 0; $i < $len; $i++) {
-        $pos = strpos($dict, $num[$i]);
-        $dec = bcadd(bcmul($pos, bcpow($from, $len - $i - 1)), $dec);
-    }
-    return $dec;
-}
 
 function show_page($content) {
     $template = '<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>短网址服务 - 缩短长链接！</title><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"></head><body><div class="container-fluid px-0"><nav class="navbar bg-light"><div class="container-fluid"><span class="navbar-brand mb-0 h1">短网址服务 - 管理面板</span><a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a></div></nav><div class="row py-4"><div class="col-1 d-none d-sm-flex"></div><div class="col-12 col-sm-10">{content}</div><div class="col-1 d-none d-sm-flex"></div></div></div></body></html>';
