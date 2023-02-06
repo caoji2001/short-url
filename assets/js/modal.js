@@ -3,7 +3,7 @@ const modifyModal = document.getElementById('modifyModal')
 
 modifyModal.addEventListener('show.bs.modal', event => {
     const button = event.relatedTarget
-    const siteurl = button.getAttribute('data-bs-siteurl')
+    const siteurl = window.location.origin + "/"
     const id62 = button.getAttribute('data-bs-id62')
     const url = button.getAttribute('data-bs-url')
 
@@ -14,7 +14,7 @@ modifyModal.addEventListener('show.bs.modal', event => {
 
 deleteModal.addEventListener('show.bs.modal', event => {
     const button = event.relatedTarget
-    const siteurl = button.getAttribute('data-bs-siteurl')
+    const siteurl = window.location.origin + "/"
     const id62 = button.getAttribute('data-bs-id62')
     const url = button.getAttribute('data-bs-url')
 
