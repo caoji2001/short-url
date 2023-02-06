@@ -24,18 +24,8 @@ if (empty($input_url)) {
     }
 
     $nice = $db->insert('fwlink', Array('id' => $random_number, 'url' => $input_url));
-    if ($nice) {
-        $protocol = '';
-        if (isset($_SERVER['HTTPS']) &&
-            ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) ||
-            isset($_SERVER['HTTP_X_FORWARDED_PROTO']) &&
-            $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-            $protocol = 'https://';
-        } else {
-            $protocol = 'http://';
-        }
-    
-        $fwlink = $protocol . $_SERVER['HTTP_HOST'] . '/' . from10_to62($random_number);
+    if ($nice) {    
+        $fwlink = get_site_url() . from10_to62($random_number);
 
         show_valid_page($fwlink);
     } else {
