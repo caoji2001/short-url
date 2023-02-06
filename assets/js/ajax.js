@@ -1,14 +1,32 @@
-function show_url() {
-    const ajax_node = document.getElementById("ajax_div");
+$(document).ready(function() {
+    $("#show_url").click(function() {
+        const input_url = $("#input_url").val();
 
-    const xmlhttp = new XMLHttpRequest();
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-            ajax_node.innerHTML = xmlhttp.responseText;
-        }
-    }
+        $.ajax({
+            method: "POST",
+            url: "/api/worker.php",
+            data: { 'input_url': input_url },
+            dataType:"json",
+        })
+        .done(function(msg) {
+            if (msg["ok"]) {
+                $("#input_url").addClass("is-valid");
+                $("#input_url").removeClass("is-invalid");
+                $("#input_url").val(msg["short_url"]);
+                $('#input_url').prop("readonly", true);
 
-    xmlhttp.open("POST", "/api/worker.php", true);
-    xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-    xmlhttp.send("input_url=" + document.getElementById("input_url").value);
-}
+                $("#feedback").addClass("valid-feedback");
+                $("#feedback").removeClass("invalid-feedback");
+                $("#feedback").html("长链接已缩短！");
+
+                $("#show_url").hide();
+
+            } else {
+                $("#input_url").addClass("is-invalid");
+
+                $("#feedback").addClass("invalid-feedback");
+                $("#feedback").html(msg["error_msg"]);
+            }
+        });
+    });
+});

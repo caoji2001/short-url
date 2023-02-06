@@ -35,10 +35,11 @@ if (!$db_config) {
                     <div class="col-12 col-lg-8">
                         <div class="row" id="ajax_div">
                             <div class="col-12 col-sm-10 py-2">
-                                <input type="text" class="form-control" placeholder="缩短长链接！" id="input_url">
+                                <input type="text" id="input_url" class="form-control" placeholder="缩短长链接！">
+                                <div id="feedback" class="d-block"></div>
                             </div>
                             <div class="col-12 col-sm-2 py-2">
-                                <button type="submit" class="btn btn-primary w-100" onclick="show_url()">缩短</button>
+                                <button type="submit" id="show_url" class="btn btn-primary w-100"">缩短</button>
                             </div>
                         </div>
                     </div>
@@ -53,6 +54,7 @@ if (!$db_config) {
                 <span>Powered by <a href="https://github.com/caoji2001/short-url/" target="_blank">short-url</a></span>
             </div>
         </footer>
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
         <script src="./assets/js/ajax.js"></script>
     </body>
 </html>
