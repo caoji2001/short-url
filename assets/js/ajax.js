@@ -19,7 +19,11 @@ $(document).ready(function() {
                 $("#feedback").removeClass("invalid-feedback");
                 $("#feedback").html("长链接已缩短！");
 
-                $("#show_url").hide();
+                $("#show_url").addClass("btn-success");
+                $("#show_url").removeClass("btn-primary");
+                $("#show_url").html("已生成");
+                $('#show_url').prop("disabled", true);
+
 
             } else {
                 $("#input_url").addClass("is-invalid");
