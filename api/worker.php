@@ -4,13 +4,13 @@ require_once($core_file);
 $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
-$input_url = $_POST['input_url'];
+$input_url = trim($_POST['input_url']);
 
 $arr = array('ok' => 0);
 
 if (empty($input_url)) {
     $arr['error_msg'] = '请输入要缩短的长链接！';
-} elseif (!preg_match("/\b(?:(?:https?|ftp):\/\/|www\.)[-a-z0-9+&@#\/%?=~_|!:,.;]*[-a-z0-9+&@#\/%=~_|]/i", $input_url)) {
+} elseif (!preg_match('/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&\/\/=]*)/', $input_url)) {
     $arr['error_msg'] = '输入的长链接不合法！';
 } else {
     $db = new MysqliDb (Array (
