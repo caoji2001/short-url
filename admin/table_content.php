@@ -15,10 +15,10 @@ if ($db->count > 0) {
         echo '<td class="align-middle">' . $result['url'] . '</td>';
 
         echo '<td>';
-        echo '<button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#modifyModal" data-bs-id62="' . from10_to62($result['id']) . '" data-bs-url="' . $result['url'] . '">修改';
+        echo '<button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#modifyModal">修改';
         echo '</button>';
 
-        echo '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal" data-bs-id62="' . from10_to62($result['id']) . '" data-bs-url="' . $result['url'] . '">删除';
+        echo '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除';
         echo '</button>';
         echo '</td>';
 
