@@ -151,7 +151,6 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
-    <script src="../assets/js/modal.js"></script>
     <script>
         const modifyModal = document.getElementById('modifyModal')
         const deleteModal = document.getElementById('deleteModal')
