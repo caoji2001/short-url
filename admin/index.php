@@ -46,18 +46,16 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                 <div class="col-12 col-sm-10">
                     <table class="table table-sm table-hover text-break"
                     data-toggle="table"
+                    data-url="./fwlink/table_content.php"
                     data-pagination="true"
                     data-search="true">
                         <thead>
                             <tr>
-                                <th scope="col" data-sortable="true" data-width="10" data-width-unit="%">#</th>
-                                <th scope="col" data-width="75" data-width-unit="%">URL</th>
-                                <th scope="col" data-width="15" data-width-unit="%">操作</th>
+                                <th data-field="id" data-sortable="true" data-width="10" data-width-unit="%">#</th>
+                                <th data-field="url" data-width="75" data-width-unit="%">URL</th>
+                                <th data-field="operation" data-formatter="operationFormatter" data-width="15" data-width-unit="%">操作</th>
                             </tr>
                         </thead>
-                        <tbody class="table-group-divider">
-                            <?php require_once('./fwlink/table_content.php'); ?>
-                        </tbody>
                     </table>
 
                     <div class="modal fade" id="modifyModal" tabindex="-1">
@@ -179,5 +177,9 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
             document.getElementById('del_get_id62').value = id62
             document.getElementById('del_get_url').value = url
         })
+
+        function operationFormatter(value) {
+            return '<button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#modifyModal">修改</button><button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
+        }
     </script>
 </html>

@@ -1,4 +1,17 @@
 <?php
+$core_file = dirname(__FILE__).'/../../system/core.php';
+require_once($core_file);
+$MysqliDb_file = dirname(__FILE__).'/../../system/MysqliDb.php';
+require_once($MysqliDb_file);
+
+session_start();
+if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
+    header('Location: ./login.php');
+    exit(0);
+}
+
+$data = array();
+
 $db = new MysqliDb (Array (
     'host' => $db_config['server'],
     'username' => $db_config['username'], 
@@ -10,16 +23,13 @@ $results = $db->get('blacklist', null, Array('domain'));
 
 if ($db->count > 0) {
     foreach ($results as $result) {
-        echo '<tr>';
-        echo '<td class="align-middle">' . $result['domain'] . '</td>';
-
-        echo '<td>';
-        echo '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>';
-        echo '</td>';
-
-        echo '</tr>';
+        array_push($data, array(
+            'domain' => $result['domain'],
+            'operation' => ''));
     }
 }
 
 $db->disconnect();
+
+echo json_encode($data);
 ?>

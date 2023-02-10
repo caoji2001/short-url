@@ -49,17 +49,15 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                     </div>
                     <table class="table table-sm table-hover text-break"
                     data-toggle="table"
+                    data-url="./blacklist/table_content.php"
                     data-pagination="true"
                     data-search="true">
                         <thead>
                             <tr>
-                                <th scope="col" data-width="92" data-width-unit="%">域名</th>
-                                <th scope="col" data-width="8" data-width-unit="%">操作</th>
+                                <th data-field="domain" data-width="92" data-width-unit="%">域名</th>
+                                <th data-field="operation" data-formatter="operationFormatter" data-width="8" data-width-unit="%">操作</th>
                             </tr>
                         </thead>
-                        <tbody class="table-group-divider">
-                            <?php require_once('./blacklist/table_content.php'); ?>
-                        </tbody>
                     </table>
 
                     <div class="modal fade" id="addModal" tabindex="-1">
@@ -139,5 +137,9 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
 
             document.getElementById('del_get_domain').value = domain
         })
+
+        function operationFormatter(value) {
+            return '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
+        }
     </script>
 </html>
