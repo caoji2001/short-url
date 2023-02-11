@@ -10,6 +10,7 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     exit(0);
 }
 ?>
+
 <!doctype html>
 <html lang="zh-CN">
     <head>
@@ -24,13 +25,13 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
         <nav class="navbar navbar-expand-sm bg-light">
             <div class="container-fluid">
                 <span class="navbar-brand mb-0 h1">短网址服务 - 管理面板</span>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" href="./index.php">短网址管理</a>
+                            <a class="nav-link active" href="./index.php">短网址管理</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="./blacklist.php">域名黑名单管理</a>
@@ -63,38 +64,28 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                             <div class="modal-content">
                                 <form action="./fwlink/mod.php" method="post">
                                     <div class="modal-header">
-                                        <h1 class="modal-title fs-5">
-                                            修改短链接指向
-                                        </h1>
+                                        <h1 class="modal-title fs-5">修改短链接指向</h1>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal">
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <label class="form-label">
-                                            待修改短链接
-                                        </label>
+                                        <label class="form-label">待修改短链接</label>
                                         <div class="row">
                                             <div class="col-auto d-flex flex-column justify-content-center pe-0">
                                                 <span id="mod_get_siteurl">
                                                 </span>
                                             </div>
                                             <div class="col-auto ps-0">
-                                                <input type="text" name="id62" id="mod_get_id62" class="form-control px-0"
+                                                <input type="text" id="mod_get_id62" class="form-control px-0"
                                                 readonly />
                                             </div>
                                         </div>
-                                        <label class="form-label">
-                                            新的指向链接
-                                        </label>
-                                        <input type="text" id="mod_get_url" name="url" class="form-control" />
+                                        <label class="form-label">新的指向链接</label>
+                                        <input type="text" id="mod_get_url" class="form-control" />
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            取消
-                                        </button>
-                                        <button type="submit" id="form_submit" class="btn btn-primary">
-                                            确认
-                                        </button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                        <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="mod()">确认</button>
                                     </div>
                                 </form>
                             </div>
@@ -103,42 +94,46 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                     <div class="modal fade" id="deleteModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="./fwlink/del.php" method="post">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5">
-                                            删除确认
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <label class="form-label">
-                                            待删除短链接
-                                        </label>
-                                        <div class="row">
-                                            <div class="col-auto d-flex flex-column justify-content-center pe-0">
-                                                <span id="del_get_siteurl">
-                                                </span>
-                                            </div>
-                                            <div class="col-auto ps-0">
-                                                <input type="text" name="id62" id="del_get_id62" class="form-control px-0"
-                                                readonly />
-                                            </div>
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">删除确认</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal">
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <label class="form-label">待删除短链接</label>
+                                    <div class="row">
+                                        <div class="col-auto d-flex flex-column justify-content-center pe-0">
+                                            <span id="del_get_siteurl">
+                                            </span>
                                         </div>
-                                        <label class="form-label">
-                                            指向链接
-                                        </label>
-                                        <input type="text" id="del_get_url" class="form-control" readonly />
+                                        <div class="col-auto ps-0">
+                                            <input type="text" id="del_get_id62" class="form-control px-0"
+                                            readonly />
+                                        </div>
                                     </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            取消
-                                        </button>
-                                        <button type="submit" id="form_submit" class="btn btn-primary">
-                                            确认
-                                        </button>
-                                    </div>
-                                </form>
+                                    <label class="form-label">指向链接</label>
+                                    <input type="text" id="del_get_url" class="form-control" readonly />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal" onclick="del()">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="feedbackModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">返回信息</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="get_feedback"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" onclick="location.reload()">确认</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -152,30 +147,58 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
     <script>
-        const modifyModal = document.getElementById('modifyModal')
-        const deleteModal = document.getElementById('deleteModal')
+        const modifyModal = document.getElementById("modifyModal")
+        const deleteModal = document.getElementById("deleteModal")
+        const feedbackModal = document.getElementById("feedbackModal")
 
-        modifyModal.addEventListener('show.bs.modal', event => {
+        modifyModal.addEventListener("show.bs.modal", event => {
             const button = event.relatedTarget
             const siteurl = window.location.origin + "/"
             const id62 = button.parentNode.parentNode.children[0].innerHTML
             const url = button.parentNode.parentNode.children[1].innerHTML
 
-            document.getElementById('mod_get_siteurl').innerText = siteurl
-            document.getElementById('mod_get_id62').value = id62
-            document.getElementById('mod_get_url').value = url
+            document.getElementById("mod_get_siteurl").innerText = siteurl
+            document.getElementById("mod_get_id62").value = id62
+            document.getElementById("mod_get_url").value = url
         })
 
-        deleteModal.addEventListener('show.bs.modal', event => {
+        deleteModal.addEventListener("show.bs.modal", event => {
             const button = event.relatedTarget
             const siteurl = window.location.origin + "/"
             const id62 = button.parentNode.parentNode.children[0].innerHTML
             const url = button.parentNode.parentNode.children[1].innerHTML
 
-            document.getElementById('del_get_siteurl').innerText = siteurl
-            document.getElementById('del_get_id62').value = id62
-            document.getElementById('del_get_url').value = url
+            document.getElementById("del_get_siteurl").innerText = siteurl
+            document.getElementById("del_get_id62").value = id62
+            document.getElementById("del_get_url").value = url
         })
+
+        function mod() {
+            $.post(
+                "./fwlink/mod.php",
+                {
+                    "id62": $("#mod_get_id62").val(),
+                    "url": $("#mod_get_url").val()
+                },
+                function(result) {
+                    $("#get_feedback").html(result);
+                }
+            );
+            $(feedbackModal).modal('show')
+        }
+
+        function del() {
+            $.post(
+                "./fwlink/del.php",
+                {
+                    "id62": $("#del_get_id62").val(),
+                },
+                function(result) {
+                    $("#get_feedback").html(result);
+                }
+            );
+            $(feedbackModal).modal('show')
+        }
 
         function operationFormatter(value) {
             return '<button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#modifyModal">修改</button><button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'

@@ -63,58 +63,52 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                     <div class="modal fade" id="addModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="./blacklist/add.php" method="post">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5">
-                                            新增黑名单域名
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <label class="form-label">
-                                            待新增黑名单域名
-                                        </label>
-                                        <input type="text" name="domain" class="form-control" />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            取消
-                                        </button>
-                                        <button type="submit" id="form_submit" class="btn btn-primary">
-                                            确认
-                                        </button>
-                                    </div>
-                                </form>
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">新增黑名单域名</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <label class="form-label">待新增黑名单域名</label>
+                                    <input type="text" id="add_get_domain" class="form-control" />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                    <button type="button" id="form_submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="add()">确认</button>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal fade" id="deleteModal" tabindex="-1">
                         <div class="modal-dialog">
                             <div class="modal-content">
-                                <form action="./blacklist/del.php" method="post">
-                                    <div class="modal-header">
-                                        <h1 class="modal-title fs-5">
-                                            删除黑名单域名确认
-                                        </h1>
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal">
-                                        </button>
-                                    </div>
-                                    <div class="modal-body">
-                                        <label class="form-label">
-                                            待删除黑名单域名
-                                        </label>
-                                        <input type="text" id="del_get_domain" name="domain" class="form-control" readonly />
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                                            取消
-                                        </button>
-                                        <button type="submit" id="form_submit" class="btn btn-primary">
-                                            确认
-                                        </button>
-                                    </div>
-                                </form>
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">删除黑名单域名确认</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <label class="form-label">待删除黑名单域名</label>
+                                    <input type="text" id="del_get_domain" id="del_get_domain" class="form-control" readonly />
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                    <button type="button" id="form_submit" class="btn btn-primary" data-bs-dismiss="modal" onclick="del()">确认</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="feedbackModal" tabindex="-1">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5">返回信息</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <p id="get_feedback"></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-primary" onclick="location.reload()">确认</button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -129,6 +123,7 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
     <script>
         const deleteModal = document.getElementById('deleteModal')
+        const feedbackModal = document.getElementById("feedbackModal")
 
         deleteModal.addEventListener('show.bs.modal', event => {
             const button = event.relatedTarget
@@ -136,6 +131,32 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
 
             document.getElementById('del_get_domain').value = domain
         })
+
+        function add() {
+            $.post(
+                "./blacklist/add.php",
+                {
+                    "domain": $("#add_get_domain").val(),
+                },
+                function(result) {
+                    $("#get_feedback").html(result);
+                }
+            );
+            $(feedbackModal).modal('show')
+        }
+
+        function del() {
+            $.post(
+                "./blacklist/del.php",
+                {
+                    "domain": $("#del_get_domain").val(),
+                },
+                function(result) {
+                    $("#get_feedback").html(result);
+                }
+            );
+            $(feedbackModal).modal('show')
+        }
 
         function operationFormatter(value) {
             return '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
