@@ -18,6 +18,7 @@ $db = new MysqliDb (Array (
     'port' => $db_config['port']));
 
 $db->where('id', from62_to10($_POST['id62']))->delete('fwlink');
+$db->where('id', from62_to10($_POST['id62']))->delete('visit');
 
 if ($db->getLastErrno() === 0) {
     echo '成功删除短链接！';

@@ -12,10 +12,14 @@ $db = new MysqliDb (Array (
     'port' => $db_config['port']));
 
 $id = $_GET['id'];
-$result = $db->where('id', from62_to10($id))->get('fwlink');
+$result = $db->where('id', from62_to10($id))->get('fwlink', null, Array('id', 'url'));
 if (count($result) === 0) {
     exit("查询失败！");
 } else {
+    $db->rawQuery(
+        'INSERT INTO visit(`id`, `date`, `count`) VALUES(?, curdate(), 1) ON DUPLICATE KEY UPDATE count = count + 1',
+        Array($result[0]['id']));
+
     header('Location: '. $result[0]['url']);
 }
 

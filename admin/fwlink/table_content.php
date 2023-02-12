@@ -23,9 +23,15 @@ $results = $db->get('fwlink', null, Array('id', 'url'));
 
 if ($db->count > 0) {
     foreach ($results as $result) {
+        $count = $db->where('id', $result['id'])->getValue('visit', 'SUM(`count`)');
+        if (is_null($count)) {
+            $count = "0";
+        }
+
         array_push($data, array(
             'id' => from10_to62($result['id']),
             'url' => $result['url'],
+            'count' => $count,
             'operation' => ''));
     }
 }

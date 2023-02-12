@@ -53,7 +53,8 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                         <thead>
                             <tr>
                                 <th data-field="id" data-sortable="true" data-width="10" data-width-unit="%">#</th>
-                                <th data-field="url" data-width="75" data-width-unit="%">URL</th>
+                                <th data-field="url" data-width="70" data-width-unit="%">URL</th>
+                                <th data-field="count" data-width="5" data-width-unit="%">访问量</th>
                                 <th data-field="operation" data-formatter="operationFormatter" data-width="15" data-width-unit="%">操作</th>
                             </tr>
                         </thead>
