@@ -35,6 +35,9 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                         <li class="nav-item">
                             <a class="nav-link active" href="./blacklist.php">域名黑名单管理</a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./report.php">统计报表</a>
+                        </li>
                     </ul>
                     <a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a>
                 </div>
