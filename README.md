@@ -13,7 +13,7 @@
 
 ![](https://i.imgur.com/EZU9drW.png)
 
-![](https://i.imgur.com/f2zlK68.png)
+![](https://i.imgur.com/ObPY3JH.png)
 
 
 ## 安装
