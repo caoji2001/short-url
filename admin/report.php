@@ -17,6 +17,8 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>短网址服务 - 缩短长链接！</title>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
         <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.1/dist/echarts.min.js"></script>
     </head>
     <body>
@@ -47,11 +49,25 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                 <div class="col-1 d-none d-sm-flex"></div>
                 <div class="col-12 col-sm-10">
                     <div id="main" class="w-100" style="height:600px"></div>
+                    <table class="table table-sm table-hover text-break"
+                    data-toggle="table"
+                    data-url="./report/table_content.php"
+                    data-pagination="true">
+                        <thead>
+                            <tr>
+                                <th data-field="date" data-width="60" data-width-unit="%">日期</th>
+                                <th data-field="count" data-sortable="true" data-width="40" data-width-unit="%">跳转次数</th>
+                            </tr>
+                        </thead>
+                    </table>
                 </div>
                 <div class="col-1 d-none d-sm-flex"></div>
             </div>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
         <script>
             $(document).ready(function() {
                 $.ajax({
