@@ -16,9 +16,9 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width,initial-scale=1">
         <title>短网址服务 - 缩短长链接！</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.min.css">
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.css">
+        <link rel="stylesheet" href="../assets/css/bootstrap.min.css">
+        <link rel="stylesheet" href="../assets/css/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="../assets/css/bootstrap-table.min.css">
     </head>
     <body>
         <nav class="navbar navbar-expand-sm bg-light">
@@ -120,10 +120,10 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
             </div>
         </div>
     </body>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/bootstrap-table.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.21.2/dist/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="../assets/js/jquery-3.6.3.min.js"></script>
+    <script src="../assets/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/js/bootstrap-table.min.js"></script>
+    <script src="../assets/js/bootstrap-table-zh-CN.min.js"></script>
     <script>
         const deleteModal = document.getElementById('deleteModal')
         const feedbackModal = document.getElementById("feedbackModal")

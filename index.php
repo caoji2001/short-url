@@ -13,7 +13,7 @@ if (!$db_config) {
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>短网址服务 - 缩短长链接！</title>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css">
+        <link rel="stylesheet" href="./assets/css/bootstrap.min.css">
         <style>
             body {
                 background-color: #e3f5f5;
@@ -54,7 +54,7 @@ if (!$db_config) {
                 <span>Powered by <a href="https://github.com/caoji2001/short-url/" target="_blank">short-url</a></span>
             </div>
         </footer>
-        <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
+        <script src="./assets/js/jquery-3.6.3.min.js"></script>
         <script src="./assets/js/ajax.js"></script>
     </body>
 </html>
