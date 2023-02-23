@@ -5,9 +5,8 @@ $MysqliDb_file = dirname(__FILE__).'/../../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
 session_start();
-if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
-    header('Location: ./login.php');
-    exit(0);
+if (!isset($_SESSION['username'])) {
+    exit('请登陆后再访问');
 }
 
 $data = array();
@@ -19,7 +18,11 @@ $db = new MysqliDb (Array (
     'db'=> $db_config['name'],
     'port' => $db_config['port']));
 
-$results = $db->get('fwlink', null, Array('id', 'url'));
+if ($_SESSION['admin']) {
+    $results = $db->get('fwlink', null, Array('id', 'url'));
+} else {
+    $results = $db->where('username', $_SESSION['username'])->get('fwlink', null, Array('id', 'url'));
+}
 
 if ($db->count > 0) {
     foreach ($results as $result) {

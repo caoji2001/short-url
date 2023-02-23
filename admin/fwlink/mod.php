@@ -5,9 +5,8 @@ $MysqliDb_file = dirname(__FILE__).'/../../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
 session_start();
-if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
-    header('Location: ./login.php');
-    exit(0);
+if (!isset($_SESSION['username'])) {
+    exit('请登陆后再访问');
 }
 
 $id = from62_to10($_POST['id62']);

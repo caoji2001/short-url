@@ -5,12 +5,14 @@ DROP TABLE IF EXISTS `visit`;
 
 CREATE TABLE `fwlink` (
     `id` INT(10) UNSIGNED PRIMARY KEY,
-    `url` TEXT NOT NULL
+    `url` TEXT NOT NULL,
+    `username` VARCHAR(16)
 );
 
 CREATE TABLE `user` (
     `username` VARCHAR(16) PRIMARY KEY,
-    `password` VARCHAR(32) NOT NULL
+    `password` VARCHAR(32) NOT NULL,
+    `admin` BOOLEAN NOT NULL
 );
 
 CREATE TABLE `blacklist` (

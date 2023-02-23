@@ -5,12 +5,11 @@ $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
 session_start();
-if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
+if (!isset($_SESSION['username'])) {
     header('Location: ./login.php');
     exit(0);
 }
 ?>
-
 <!doctype html>
 <html lang="zh-CN">
     <head>
@@ -33,12 +32,12 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                         <li class="nav-item">
                             <a class="nav-link active" href="./index.php">短网址管理</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./blacklist.php">域名黑名单管理</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="./report.php">统计报表</a>
-                        </li>
+                        <?php
+                            if (isset($_SESSION['admin']) && $_SESSION['admin']) {
+                                echo '<li class="nav-item"><a class="nav-link" href="./blacklist.php">域名黑名单管理</a></li>';
+                                echo '<li class="nav-item"><a class="nav-link" href="./report.php">统计报表</a></li>';
+                            }
+                        ?>
                     </ul>
                     <a class="btn btn-outline-danger" href="./logout.php" role="button">登出</a>
                 </div>

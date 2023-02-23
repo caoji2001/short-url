@@ -5,7 +5,7 @@ $MysqliDb_file = dirname(__FILE__).'/../system/MysqliDb.php';
 require_once($MysqliDb_file);
 
 session_start();
-if (isset($_SESSION['admin']) && $_SESSION['admin'] === true) {
+if (isset($_SESSION['username'])) {
     header('Location: ./index.php');
     exit(0);
 }
@@ -56,11 +56,11 @@ switch(@$_GET['step']) {
             'db'=> $db_config['name'],
             'port' => $db_config['port']));
 
-        $count = $db->where('username', $username)->where('password', $password)->getValue('user', "count(*)");
-        if ($count === 0) {
+        if ($db->where('username', $username)->where('password', $password)->getValue('user', 'count(*)') === 0) {
             show_back('用户名或密码错误！');
         } else {
-            $_SESSION['admin'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['admin'] = $db->where('username', $username)->where('password', $password)->getValue('user', 'admin');
             header('Location: ./index.php');
         }
 

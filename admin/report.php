@@ -6,8 +6,7 @@ require_once($MysqliDb_file);
 
 session_start();
 if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
-    header('Location: ./login.php');
-    exit(0);
+    exit('仅限管理员访问');
 }
 ?>
 <!doctype html>

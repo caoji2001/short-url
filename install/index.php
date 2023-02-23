@@ -128,7 +128,7 @@ switch($_GET['step']) {
         }
 
         $install_script = file_get_contents(dirname(__FILE__) . '/install.sql');
-        $install_script .= "INSERT INTO user (`username`, `password`) VALUES ('$username', '$password')";
+        $install_script .= "INSERT INTO user (`username`, `password`, `admin`) VALUES ('$username', '$password', 1)";
 
         if (!$conn->multi_query($install_script)) {
             show_back('安装过程出现错误：' . $conn->error);

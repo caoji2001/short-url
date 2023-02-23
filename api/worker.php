@@ -28,7 +28,12 @@ if (empty($input_url)) {
             $random_number = rand(14776337, 916132832); // [62^4 + 1, 62^5]
         }
 
-        $nice = $db->insert('fwlink', Array('id' => $random_number, 'url' => $input_url));
+        session_start();
+        if (isset($_SESSION['username']) && !$_SESSION['admin']) {
+            $nice = $db->insert('fwlink', Array('id' => $random_number, 'url' => $input_url, 'username' => $_SESSION['username']));
+        } else {
+            $nice = $db->insert('fwlink', Array('id' => $random_number, 'url' => $input_url));
+        }
 
         if ($nice) {
             $arr['ok'] = 1;
