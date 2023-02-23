@@ -145,67 +145,67 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                 <div class="col-1 d-none d-sm-flex"></div>
             </div>
         </div>
+        <script src="../assets/js/jquery-3.6.3.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/bootstrap-table.min.js"></script>
+        <script src="../assets/js/bootstrap-table-zh-CN.min.js"></script>
+        <script>
+            const modifyModal = document.getElementById("modifyModal")
+            const deleteModal = document.getElementById("deleteModal")
+            const feedbackModal = document.getElementById("feedbackModal")
+
+            modifyModal.addEventListener("show.bs.modal", event => {
+                const button = event.relatedTarget
+                const siteurl = window.location.origin + "/"
+                const id62 = button.parentNode.parentNode.children[0].innerHTML
+                const url = button.parentNode.parentNode.children[1].innerHTML
+
+                document.getElementById("mod_get_siteurl").innerText = siteurl
+                document.getElementById("mod_get_id62").value = id62
+                document.getElementById("mod_get_url").value = url
+            })
+
+            deleteModal.addEventListener("show.bs.modal", event => {
+                const button = event.relatedTarget
+                const siteurl = window.location.origin + "/"
+                const id62 = button.parentNode.parentNode.children[0].innerHTML
+                const url = button.parentNode.parentNode.children[1].innerHTML
+
+                document.getElementById("del_get_siteurl").innerText = siteurl
+                document.getElementById("del_get_id62").value = id62
+                document.getElementById("del_get_url").value = url
+            })
+
+            function mod() {
+                $.post(
+                    "./fwlink/mod.php",
+                    {
+                        "id62": $("#mod_get_id62").val(),
+                        "url": $("#mod_get_url").val()
+                    },
+                    function(result) {
+                        $("#get_feedback").html(result);
+                    }
+                );
+                $(feedbackModal).modal('show')
+            }
+
+            function del() {
+                $.post(
+                    "./fwlink/del.php",
+                    {
+                        "id62": $("#del_get_id62").val(),
+                    },
+                    function(result) {
+                        $("#get_feedback").html(result);
+                    }
+                );
+                $(feedbackModal).modal('show')
+            }
+
+            function operationFormatter(value) {
+                return '<button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#modifyModal">修改</button><button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
+            }
+        </script>
     </body>
-    <script src="../assets/js/jquery-3.6.3.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/bootstrap-table.min.js"></script>
-    <script src="../assets/js/bootstrap-table-zh-CN.min.js"></script>
-    <script>
-        const modifyModal = document.getElementById("modifyModal")
-        const deleteModal = document.getElementById("deleteModal")
-        const feedbackModal = document.getElementById("feedbackModal")
-
-        modifyModal.addEventListener("show.bs.modal", event => {
-            const button = event.relatedTarget
-            const siteurl = window.location.origin + "/"
-            const id62 = button.parentNode.parentNode.children[0].innerHTML
-            const url = button.parentNode.parentNode.children[1].innerHTML
-
-            document.getElementById("mod_get_siteurl").innerText = siteurl
-            document.getElementById("mod_get_id62").value = id62
-            document.getElementById("mod_get_url").value = url
-        })
-
-        deleteModal.addEventListener("show.bs.modal", event => {
-            const button = event.relatedTarget
-            const siteurl = window.location.origin + "/"
-            const id62 = button.parentNode.parentNode.children[0].innerHTML
-            const url = button.parentNode.parentNode.children[1].innerHTML
-
-            document.getElementById("del_get_siteurl").innerText = siteurl
-            document.getElementById("del_get_id62").value = id62
-            document.getElementById("del_get_url").value = url
-        })
-
-        function mod() {
-            $.post(
-                "./fwlink/mod.php",
-                {
-                    "id62": $("#mod_get_id62").val(),
-                    "url": $("#mod_get_url").val()
-                },
-                function(result) {
-                    $("#get_feedback").html(result);
-                }
-            );
-            $(feedbackModal).modal('show')
-        }
-
-        function del() {
-            $.post(
-                "./fwlink/del.php",
-                {
-                    "id62": $("#del_get_id62").val(),
-                },
-                function(result) {
-                    $("#get_feedback").html(result);
-                }
-            );
-            $(feedbackModal).modal('show')
-        }
-
-        function operationFormatter(value) {
-            return '<button type="button" class="btn btn-outline-warning m-1" data-bs-toggle="modal" data-bs-target="#modifyModal">修改</button><button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
-        }
-    </script>
 </html>

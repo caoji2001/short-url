@@ -119,50 +119,50 @@ if (!isset($_SESSION['admin']) || !$_SESSION['admin']) {
                 <div class="col-1 d-none d-sm-flex"></div>
             </div>
         </div>
+        <script src="../assets/js/jquery-3.6.3.min.js"></script>
+        <script src="../assets/js/bootstrap.bundle.min.js"></script>
+        <script src="../assets/js/bootstrap-table.min.js"></script>
+        <script src="../assets/js/bootstrap-table-zh-CN.min.js"></script>
+        <script>
+            const deleteModal = document.getElementById('deleteModal')
+            const feedbackModal = document.getElementById("feedbackModal")
+
+            deleteModal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget
+                const domain = button.parentNode.parentNode.children[0].innerHTML
+
+                document.getElementById('del_get_domain').value = domain
+            })
+
+            function add() {
+                $.post(
+                    "./blacklist/add.php",
+                    {
+                        "domain": $("#add_get_domain").val(),
+                    },
+                    function(result) {
+                        $("#get_feedback").html(result);
+                    }
+                );
+                $(feedbackModal).modal('show')
+            }
+
+            function del() {
+                $.post(
+                    "./blacklist/del.php",
+                    {
+                        "domain": $("#del_get_domain").val(),
+                    },
+                    function(result) {
+                        $("#get_feedback").html(result);
+                    }
+                );
+                $(feedbackModal).modal('show')
+            }
+
+            function operationFormatter(value) {
+                return '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
+            }
+        </script>
     </body>
-    <script src="../assets/js/jquery-3.6.3.min.js"></script>
-    <script src="../assets/js/bootstrap.bundle.min.js"></script>
-    <script src="../assets/js/bootstrap-table.min.js"></script>
-    <script src="../assets/js/bootstrap-table-zh-CN.min.js"></script>
-    <script>
-        const deleteModal = document.getElementById('deleteModal')
-        const feedbackModal = document.getElementById("feedbackModal")
-
-        deleteModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget
-            const domain = button.parentNode.parentNode.children[0].innerHTML
-
-            document.getElementById('del_get_domain').value = domain
-        })
-
-        function add() {
-            $.post(
-                "./blacklist/add.php",
-                {
-                    "domain": $("#add_get_domain").val(),
-                },
-                function(result) {
-                    $("#get_feedback").html(result);
-                }
-            );
-            $(feedbackModal).modal('show')
-        }
-
-        function del() {
-            $.post(
-                "./blacklist/del.php",
-                {
-                    "domain": $("#del_get_domain").val(),
-                },
-                function(result) {
-                    $("#get_feedback").html(result);
-                }
-            );
-            $(feedbackModal).modal('show')
-        }
-
-        function operationFormatter(value) {
-            return '<button type="button" class="btn btn-outline-danger m-1" data-bs-toggle="modal" data-bs-target="#deleteModal">删除</button>'
-        }
-    </script>
 </html>
