@@ -16,13 +16,19 @@ $db = new MysqliDb (Array (
     'db'=> $db_config['name'],
     'port' => $db_config['port']));
 
-$db->where('id', from62_to10($_POST['id62']))->delete('fwlink');
-$db->where('id', from62_to10($_POST['id62']))->delete('visit');
+$id = from62_to10($_POST['id62']);
 
-if ($db->getLastErrno() === 0) {
-    echo '成功删除短链接！';
+if (!$_SESSION['admin'] && $db->where('id', $id)->getValue('fwlink', 'username') != $_SESSION['username']) {
+    echo '你没有权限删除该短链接';
 } else {
-    echo '删除短链接失败：' . $db->getLastError();
+    $db->where('id', $id)->delete('fwlink');
+    $db->where('id', $id)->delete('visit');
+
+    if ($db->getLastErrno() === 0) {
+        echo '成功删除短链接！';
+    } else {
+        echo '删除短链接失败：' . $db->getLastError();
+    }
 }
 
 $db->disconnect();

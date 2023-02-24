@@ -24,12 +24,16 @@ if (empty($input_url)) {
         'db'=> $db_config['name'],
         'port' => $db_config['port']));
 
-    $db->where('id', $id)->update('fwlink', Array('url' => $input_url));
-
-    if ($db->getLastErrno() === 0) {
-        echo '成功更改短链接指向！';
+    if (!$_SESSION['admin'] && $db->where('id', $id)->getValue('fwlink', 'username') != $_SESSION['username']) {
+        echo '你没有权限修改该短链接';
     } else {
-        echo '修改数据失败：' . $db->getLastError();
+        $db->where('id', $id)->update('fwlink', Array('url' => $input_url));
+
+        if ($db->getLastErrno() === 0) {
+            echo '成功更改短链接指向！';
+        } else {
+            echo '修改数据失败：' . $db->getLastError();
+        }
     }
 
     $db->disconnect();
